@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.bsale.airline.dto.FlightDTO;
 import com.bsale.airline.dto.PassengersDTO;
-
+import com.bsale.airline.mapper.PassengersMapper;
 import com.bsale.airline.model.Flight;
 import com.bsale.airline.model.Passenger;
 
@@ -26,12 +26,30 @@ public class FlightServiceImpl implements FlightService {
 	@Autowired
 	PassengerRepository passengerRepository;
 
+	@Autowired
+	PassengersMapper passengersMapper;
 	
 
 	public static final String FIELD_WITH_ID = "Field with id = ";
 	public static final String DOES_NOT_EXIST = " does not exist.";
 
+	private List<PassengersDTO> findByIdPassengerAndFlight(Flight flightById ) {
 
+		List<Passenger> passengersList = (List<Passenger>) passengerRepository.findAll();
+
+		List<PassengersDTO> passengersListDTO = new ArrayList<>();
+
+		for (Passenger passenger : passengersList) {
+
+			if (passenger.getBoardingPass().getFlight().getFlightId().equals(flightById.getFlightId())) {// match by id
+				PassengersDTO passengersDTO = passengersMapper.toDTO(passenger);
+
+				passengersListDTO.add(passengersDTO);
+			}
+		}
+
+		return passengersListDTO;
+	}
 
 	@Override
 	public FlightDTO findByIdWithPassengersList(Long id) {
@@ -51,8 +69,8 @@ public class FlightServiceImpl implements FlightService {
 		flightDTO.setLandingAirport(flightById.getLandingAirport());
 		flightDTO.setAirplaneId(flightById.getFlightId());
 
-		//List<PassengersDTO> passengersListDTO = findByIdPassengerAndFlight(flightById);// match by id
-		//flightDTO.setPassengers(passengersListDTO);
+		List<PassengersDTO> passengersListDTO = findByIdPassengerAndFlight(flightById);// match by id
+		flightDTO.setPassengers(passengersListDTO);
 
 		return flightDTO;
 	}
