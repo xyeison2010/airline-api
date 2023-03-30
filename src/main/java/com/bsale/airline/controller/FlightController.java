@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bsale.airline.dto.FlightDTO;
-
-
+import com.bsale.airline.exception.ResponseHandler;
 import com.bsale.airline.service.FlightService;
 
 @RestController
@@ -34,7 +33,8 @@ public class FlightController {
 
 		FlightDTO flightDTO = flightService.findByIdWithPassengersList(id);
 
-		return ResponseEntity.ok(flightDTO);
+		return ResponseHandler.generateResponse(HttpStatus.OK, flightDTO);
+
 
 	}
 
