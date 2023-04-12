@@ -7,6 +7,8 @@
  **Persistencia base de datos : Spring Data JPA**
  
  **Arquitectura servicios Rest**
+ 
+ **Api testing : Postman**
 
 ### *Prerequisitos*
 La primera vez se instalan las dependecias usadas por el proyecto, esto lo realizará el comando mvn desde un repositorio de internet todo lo necesario.
